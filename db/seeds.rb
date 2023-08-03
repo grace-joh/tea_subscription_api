@@ -5,6 +5,10 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+CustomerTeaSubscription.destroy_all
+Customer.destroy_all
+Tea.destroy_all
+Subscription.destroy_all
 
 # Teas
 # Source: https://www.stashtea.com/
@@ -18,11 +22,12 @@ sub_6 = Subscription.create!(title: 'Six Month Subscription', price: 15, plan_le
 sub_12 = Subscription.create!(title: 'Twelve Month Subscription', price: 12, plan_length: 12)
 
 # Customers
-cust_1 = Customer.create!(first_name: 'John', last_name:'Smith', email: 'johnsmith423@email.com', street_address: '123 Main St', city: 'New York', state: 'NY', zip: '10001')
-cust_2 = Customer.create!(first_name: 'Wei', last_name:'Chen', email: 'wchen32@email.com', street_address: '456 Oak Rd', city: 'Los Angeles', state: 'CA', zip: '90001')
-cust_3 = Customer.create!(first_name: 'Alejandro', last_name:'Gomez', email: 'agomez99@email.com', street_address: '789 Elm St', city: 'Chicago', state: 'IL', zip: '60001')
-cust_4 = Customer.create!(first_name: 'Jessica', last_name:'Davis', email: 'jdavis044@email.com', street_address: '135 Pine Ave', city: 'Houston', state: 'TX', zip: '70001')
-cust_5 = Customer.create!(first_name: 'Takashi', last_name:'Sato', email: 'tsato88@email.com', street_address: '246 Cedar Ln', city: 'Phoenix', state: 'AZ', zip: '85001')
+cust_1 = Customer.create!(first_name: 'John', last_name: 'Smith', email: 'johnsmith423@email.com', street_address: '123 Main St', city: 'New York', state: 'NY', zip: '10001')
+cust_2 = Customer.create!(first_name: 'Wei', last_name: 'Chen', email: 'wchen32@email.com', street_address: '456 Oak Rd', city: 'Los Angeles', state: 'CA', zip: '90001')
+cust_3 = Customer.create!(first_name: 'Alejandro', last_name: 'Gomez', email: 'agomez99@email.com', street_address: '789 Elm St', city: 'Chicago', state: 'IL', zip: '60001')
+cust_4 = Customer.create!(first_name: 'Jessica', last_name: 'Davis', email: 'jdavis044@email.com', street_address: '135 Pine Ave', city: 'Houston', state: 'TX', zip: '70001')
+cust_5 = Customer.create!(first_name: 'Takashi', last_name: 'Sato', email: 'tsato88@email.com', street_address: '246 Cedar Ln', city: 'Phoenix', state: 'AZ', zip: '85001')
+cust_6 = Customer.create!(first_name: 'Grace', last_name: 'Joh', email: 'test@email.com', street_address: '12456 Demo Rd', city: 'Dallas', state: 'TX', zip: '75057')
 
 # CustomerTeaSubscriptions
 # Customer 1 has 2 active subscriptions and 1 cancelled
@@ -41,3 +46,4 @@ cust_sub_33 = CustomerTeaSubscription.create!(customer: cust_3, tea: oolong_tea,
 cust_sub_41 = CustomerTeaSubscription.create!(customer: cust_4, tea: assam_tea, subscription: sub_3, status: 1)
 cust_sub_42 = CustomerTeaSubscription.create!(customer: cust_4, tea: oolong_tea, subscription: sub_6, status: 1)
 # Customer 5 has 0 subscriptions
+# Customer 6 for demo
