@@ -1,24 +1,160 @@
-# README
+<!-- insert image ![]() -->
+<h1 align="center">Tea Subscription API</h1>
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## About
 
-Things you may want to cover:
+Tea Subscription is a REST API that exposes three endpoints to subscribe a customer to a tea subscription, cancel a customer's tea subscription, and see all of a customer's subscriptions (active and cancelled).
 
-* Ruby version
+This API is a project that mimics a take home assessment from the [Turing School of Software and Design](turing.edu), preparing students for a technical interview process. 
+This assessment checks for:
+* A strong understanding of Rails
+* Ability to create restful routes
+* Demonstration of well-organized code, following OOP
+* Test Driven Development
+* Clear documentation
 
-* System dependencies
+See [here](https://mod4.turing.edu/projects/take_home/take_home_be) for more details.
 
-* Configuration
+## Table of Contents
 
-* Database creation
+1. [Built with](#built-with)
+1. [Getting Started](#getting-started)
+  1. [Installation](#installation)
+  1. [Testing](#testing)
+1. [Endpoints](#endpoints)
+1. [Schema Design](#schema-design)
+1. [Planning Process](#planning-process)
+  1. [Understanding the Product](#understanding-the-product)
+  1. [Database Relationships](#database-relationships)
+  1. [GitHub Projects Set Up](#github-projects-set-up)
+  1. [JSON Contract](#json-contract)
+  1. [Pull Request Template](#pull-request-template)
+1. [Refactors and Future Implementations](#refactors-and-future-implementations)
+1. [About the Developer](#about-the-developer)
 
-* Database initialization
+## Built with
 
-* How to run the test suite
+* Ruby on Rails v 7.0.6
+* Ruby v 3.1.1
+* PostgreSQL
+* Visual Studio Code
 
-* Services (job queues, cache servers, search engines, etc.)
+## Getting Started
 
-* Deployment instructions
+### Installation
 
-* ...
+In your terminal:
+1. Fork and clone the repository locally `git clone git@github.com:grace-joh/tea_subscription_api.git`
+1. Navigate into the directory `cd tea_subscription_api`
+1. Install gem packages: `bundle install`
+1. Setup the database: `rails db:{create,migrate}`
+
+
+### Testing
+
+To run all tests from your command line:
+* run `bundle exec rspec`
+
+All tests should be passing. Happy and sad path cases were accounted for and tested for each [endpoint](##endpoints).
+
+To test the endpoints:
+* In your terminal, run `rails s` to start a local server.
+* Use an API platform like [Postman](https://app.getpostman.com/run-collection/26085409-1cb627ef-d500-4f6f-b849-9b655205c7ed?action=collection%2Ffork&collection-url=entityId%3D26085409-1cb627ef-d500-4f6f-b849-9b655205c7ed%26entityType%3Dcollection%26workspaceId%3Df402ed1d-531c-4451-ad21-b6367689bff9) or a REST API client extension like [Thunder Client](https://www.thunderclient.io/).
+
+## Endpoints
+#### POST `/api/v0/customer/:id/subscriptions`
+  <details><summary>Request</summary>
+    * Send the location as a query parameter
+  </details>
+  <details><summary>Response</summary>
+  Status 200 OK
+  ```json
+    {
+      "data": {
+          "id": null,
+          "type": "forecast",
+          "attributes": {}
+          }
+      }
+  ```
+  </details>
+
+
+## Schema Design
+<!-- insert image ![]() -->
+
+## Planning Process
+
+### Understanding the Product
+<details>
+  <summary style="font-weight: 700;"> Decisions about the Subscription Service</summary>
+  Before building my database and API endpoints, I took several factors of a tea subscription service into consideration. I had many initial questions:
+
+  - What kind of subscriptions do the business provide?
+    - Is it a single tea, a set of multiple teas, or different teas every delivery? And the amount of tea? 
+    - Is there a variety of options for subscription by frequency (how often tea is delivered) or by plan length (every month for __ number of months)?
+    - Is price determined by tea or by subscription frequency?
+  - Are tea subscriptions set by the business or will users be able to customize their subscription?
+  
+  I considered the above from a business perspective, but ultimately decided on a streamlined product from a developer perspective to create a MVP (minimum viable product).
+  - Each subscription "box" comes with 3 oz of a single tea or an assorted tea set (decided by the business) of three teas, 1 oz each.
+  - Monthly subscriptions will be available by plan length.
+    - Plan A: 3 Months at $16/month
+    - Plan B: 6 Months at $15/month
+    - Plan C: 12 Months at $12/month
+  - Price
+    - For the MVP, the price of the subscription will be determined by plan as listed above
+    - For beyond the MVP, I would like to implement the following:
+      - The price of a single tea subscription will be determined by tea per ounce.
+      - The price of a tea assortment will be set by the business.
+    
+Making these "business" decisions first helped me to start with a focused product to build my database and endpoints.
+
+### Database Relationships
+</details>
+</br>
+<details>
+  <summary style="font-weight: 700;">Database Relationships</summary>
+  > Next, I considered the relationships between Tea, Customer, and Subscription. 
+  </br>
+  First, I drew a plan for a many-to-many relationship between teas and subscriptions so that a subscription could consist of many teas. In addition, subscriptions and customers would also be a many-to-many relationship so that a customer could have many subscriptions, and thus with many teas to be subscribed to under a single subscription.
+  <!-- insert image ![]() -->
+  > However, the above option felt overengineered for user customization in this case where the subscription service by tea and plan length are predetermined by the business decisions above. Thus, for my MVP, I decided to created the Tea and Customer tables having a many-to-many relationship with Subscription as the joins table between the two. 
+  <!-- insert image ![]() -->
+</details>
+</br>
+<details>
+  <summary style="font-weight: 700;">Determining Endpoints</summary>
+  The three required endpoints are: 
+  - Subscribe a customer to a tea subscription
+  - Cancel a customer’s tea subscription (cancelled status)
+  - See all of a customer’s subsciptions (active and cancelled)
+
+  My initial thoughts and questions:
+  - The required endpoints can be routed to a single Subscriptions Controller with the verbs: POST, PATCH, and GET. 
+  - Subscriptions should be included in the URI path as it is what is being created, updated, and read.
+  - Could subscriptions be nested under user or tea? Should user id and/or be sent via the URI path -> through the request body?
+  
+  Brainstorming URI endpoint options:
+  1. Subscription -> `/api/v0/subscriptions`
+    - POST and PATCH requests would send customer id and tea id in the request body
+    - GET request for all a customer's subscriptions would require customer id as a query parameter -> Nope!
+  1. Subscription via Customer -> `/api/v0/customer/:id/subscriptions`
+    - POST and PATCH requests would send tea id in the request body
+    - GET request for all a customer's subscriptions indicate customer id in the URI path
+  1. Subscription via Tea -> `/api/v0/tea/:id/subscriptions`
+    - POST and PATCH requests would send customer id in the request body
+    - GET request for all a customer's subscriptions would require customer id as a query parameter -> Nope!
+
+  I opted for Option 2 considering all three API endpoints (particularly the GET request) require a customer's id.
+</details>
+
+### GitHub Projects Set Up
+
+### JSON Contract
+### Pull Request Template
+
+## Refactors and Future Implementations
+## About the Developer
+
+* Grace Joh - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/grace-joh)
