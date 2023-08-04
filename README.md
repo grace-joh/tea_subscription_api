@@ -33,6 +33,7 @@ See the [Prompt](https://mod4.turing.edu/projects/take_home/take_home_be) for mo
 1. [Planning Process](#planning-process)
     * [Understanding the Product](#understanding-the-product)
     * [Database Relationships](#database-relationships)
+    * [Determining Endpoints](#determining-endpoints)
     * [GitHub Projects Set Up](#github-projects-set-up)
     * [JSON Contract](#json-contract)
     * [Pull Request Template](#pull-request-template)
@@ -227,11 +228,11 @@ Many considerations were taken into account when designing the database schema. 
     
 Making these "business" decisions first helped me to start with a focused product to build my database and endpoints.
 
-### Database Relationships
 </details>
-</br>
+
+### Database Relationships
 <details>
-  <summary style="font-weight: 700;">Database Relationships</summary>
+  <summary style="font-weight: 700;">How many Many-to-Many?</summary>
   Next, I considered the relationships between Tea, Customer, and Subscription. 
   </br>
   First, I drew a plan for a many-to-many relationship between teas and subscriptions so that a subscription could consist of many teas. In addition, subscriptions and customers would also be a many-to-many relationship so that a customer could have many subscriptions, and thus with many teas to be subscribed to under a single subscription.
@@ -253,9 +254,10 @@ Making these "business" decisions first helped me to start with a focused produc
 ![Screenshot 2023-08-03 at 9 43 55 AM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/8be3dec4-c9d3-4139-b458-d5943f3cba2a)
 
 </details>
-</br>
+
+### Determining Endpoints
 <details>
-  <summary style="font-weight: 700;">Determining RESTful Endpoints</summary>
+  <summary style="font-weight: 700;">To be RESTful or not to be...</summary>
   The three required endpoints are: 
   - Subscribe a customer to a tea subscription
   - Cancel a customer’s tea subscription (cancelled status)
@@ -297,7 +299,12 @@ I created a pull request template to help organize my work for each branch. I in
 
 
 ## Refactors and Future Implementations
-Coming soon...
+* Add tea and subscription details in response body via custom serializer
+* Determine need for uniqueness of subscriptions
+* Refactor error handling
+* Consider renaming tables to align with routes and controllers for RESTful routes
+* Refactor Patch request body to have `customer_tea_subscription_id` rather than the three separate ids
+* Consider refactoring SubscriptionsController #update action to #cancel to differentiate from updating a subscription
 
 ## About the Developer
 
