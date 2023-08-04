@@ -195,7 +195,8 @@ To test the endpoints:
 
 
 ## Database Schema Design
-<!-- insert image ![]() -->
+![Schema](https://github.com/grace-joh/tea_subscription_api/assets/105441393/ddd2010e-173d-4674-a751-c00b2c52ad06)
+
 Many considerations were taken into account when designing the database schema. See [Database Relationships](#database-relationships) for more details.
 
 ## Planning Process
@@ -234,14 +235,23 @@ Making these "business" decisions first helped me to start with a focused produc
   Next, I considered the relationships between Tea, Customer, and Subscription. 
   </br>
   First, I drew a plan for a many-to-many relationship between teas and subscriptions so that a subscription could consist of many teas. In addition, subscriptions and customers would also be a many-to-many relationship so that a customer could have many subscriptions, and thus with many teas to be subscribed to under a single subscription.
-  <!-- insert image ![]() -->
+
+![Screenshot 2023-08-02 at 9 53 33 PM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/af45bb25-6d6b-4edb-9d74-6367d7f583dd)
+
+
   However, the above option felt overengineered for user customization in this case where the subscription service by tea and plan length are predetermined by the business decisions above. So I considered a simple design with the Tea and Customer tables having a many-to-many relationship with Subscription as the joins table between the two. 
-  <!-- insert image ![]() -->
+
+![Screenshot 2023-08-02 at 9 55 55 PM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/988c7347-dc08-49b3-aca8-c7e677c0cbb8)
+
   When considering my endpoints and HTTP requests for this design, I imagined that it would require the subscription attributes, like frequency and price, to be sent in the request body. This would be a lot of information to send in the request body, and I wanted to keep the request body as minimal as possible. So then, I considered a third option to create a table for the predetermined subscription plans. Then teas and subscriptions would have a many-to-many relationship, and then the join table could have a many-to-many relationship with customers.
-  <!-- insert image ![]() -->
+
+![Screenshot 2023-08-03 at 9 42 41 AM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/bada4aeb-54e5-4ea3-a740-913046eaf61b)
+
   After second look in this database design, the two join tables felt repetitive. I reduced the design to have a single join table between the three tables: Tea, Customer, and Subscription. 
   This would allow for a customer to have many subscriptions, and a subscription to have many teas. Another advantange is that the subscription attributes, like frequency and price, would be stored in the subscription table. This would allow for a minimal request body for the POST and PATCH requests. A disadvantage, however, was that in the JSON response for all the requests, only the tea id and subscription ids would be returned. I would like to add tea and subscription attributes in a future refactor.
-  <!-- insert image ![]() -->
+
+![Screenshot 2023-08-03 at 9 43 55 AM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/8be3dec4-c9d3-4139-b458-d5943f3cba2a)
+
 </details>
 </br>
 <details>
@@ -272,15 +282,19 @@ Making these "business" decisions first helped me to start with a focused produc
 
 ### GitHub Projects Set Up
 I utilized GitHub Projects to keep track of my progress and to keep myself organized. I created a Project Board with three columns: To Do, In Progress, and Done. I created issues and branches for each task and utilized them to guide my GitHub workflow.
-<!-- insert image ![]() -->
+![Screenshot 2023-08-02 at 11 13 18 PM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/67261c45-7601-4feb-96cd-865999707a4a)
+
 
 ### JSON Contract
 In each endpoint task in my GiHub Project Board, I created a JSON contract to help me visualize the request and response bodies, as well as happy and sad paths. I also used the JSON contract to help me organize the attributes for each table in my database schema design.
-<!-- insert image ![]() -->
+![Screenshot 2023-08-04 at 10 35 20 AM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/d05c2e41-aa6f-4af1-855e-83a3ce11047a)
+
 
 ### Pull Request Template
 I created a pull request template to help organize my work for each branch. I included a checklist to ensure all tests were passing (with 100% coverage!). I also included a section to record future notes to myself regarding questions, concerns, future refactors, and self-encouragement. This helped me to stay organized and to keep track of my progress.
-<!-- insert image ![]() -->
+![Screenshot 2023-08-04 at 10 37 06 AM](https://github.com/grace-joh/tea_subscription_api/assets/105441393/7f3a3855-7390-4f8d-8f92-78ae9633651b)
+
+
 
 ## Refactors and Future Implementations
 Coming soon...
